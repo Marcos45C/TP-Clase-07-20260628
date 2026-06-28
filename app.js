@@ -402,11 +402,78 @@ function agregarAlCarrito(libro) {
  * Incluye un botón "Iniciar compra" que lanza el wizard.
  */
 function abrirModalCarrito() {
-  // TODO: construir con createElement la lista de ítems del carrito
-  //   - por cada ítem: .carrito-item con título, cantidad y subtotal
-  //   - al final: .carrito-total con el total general
-  //   - botón "Iniciar compra" que llame a initWizard()
-  // TODO: mostrar la modal
+   // Limpiar la modal
+  modalBody.innerHTML = "";
+
+  // Si el carrito está vacío
+  if (carrito.length === 0) {
+
+    const mensaje = document.createElement("p");
+    mensaje.textContent = "El carrito está vacío.";
+
+    modalBody.appendChild(mensaje);
+
+  } else {
+
+    let total = 0;
+
+    carrito.forEach(function(item){
+
+      const fila = document.createElement("div");
+      fila.classList.add("carrito-item");
+
+      const titulo = document.createElement("span");
+      titulo.classList.add("carrito-item-titulo");
+      titulo.textContent = item.libro.titulo + " x" + item.cantidad;
+
+      const precio = document.createElement("span");
+      precio.classList.add("carrito-item-precio");
+
+      const subtotal = item.libro.precio * item.cantidad;
+
+      precio.textContent = "$" + subtotal.toLocaleString("es-AR");
+
+      total += subtotal;
+
+      fila.appendChild(titulo);
+      fila.appendChild(precio);
+
+      modalBody.appendChild(fila);
+
+    });
+
+    // Total
+    const totalDiv = document.createElement("div");
+    totalDiv.classList.add("carrito-total");
+
+    const textoTotal = document.createElement("span");
+    textoTotal.textContent = "Total";
+
+    const montoTotal = document.createElement("span");
+    montoTotal.textContent = "$" + total.toLocaleString("es-AR");
+
+    totalDiv.appendChild(textoTotal);
+    totalDiv.appendChild(montoTotal);
+
+    modalBody.appendChild(totalDiv);
+
+    // Botón iniciar compra
+    const boton = document.createElement("button");
+    boton.classList.add("modal-btn-comprar");
+    boton.textContent = "Iniciar compra";
+
+    boton.addEventListener("click", function(){
+
+      initWizard();
+
+    });
+
+    modalBody.appendChild(boton);
+
+  }
+
+  modal.classList.remove("oculta");
+  modal.setAttribute("aria-hidden", "false");
 }
 
 
@@ -465,6 +532,8 @@ function confirmarCompra() {
  * @param {'exito'|'error'|'info'} tipo
  */
 function mostrarToast(mensaje, tipo = 'info') {
+  console.log(mensaje);
+
   // TODO: crear el elemento .toast con la clase correspondiente
   // TODO: insertarlo en #toast-container
   // TODO: eliminarlo con setTimeout después de 4000ms
@@ -550,7 +619,7 @@ function init() {
   initFiltros();          // Nivel A
   initModal();            // Nivel A
   // initBuscador();      // Descomentar en Nivel C
-  // btnCarrito.addEventListener('click', abrirModalCarrito); // Nivel B
+  btnCarrito.addEventListener('click', abrirModalCarrito); // Nivel B
 }
 
 document.addEventListener('DOMContentLoaded', init);
