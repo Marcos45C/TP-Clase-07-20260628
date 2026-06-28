@@ -323,7 +323,7 @@ function abrirModalLibro(libro) {
 
 
 /**
- * cerrarModal()
+ * cerrarModal( 
  * Oculta la modal y limpia su contenido.
  */
 function cerrarModal() {
