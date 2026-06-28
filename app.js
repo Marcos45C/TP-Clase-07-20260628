@@ -365,10 +365,33 @@ function initModal() {
  * Actualiza el contador visible en el header.
  */
 function agregarAlCarrito(libro) {
-  // TODO: buscar si el libro ya está en carrito (por id)
-  // TODO: si existe, incrementar cantidad; si no, hacer push de { libro, cantidad: 1 }
-  // TODO: actualizar el texto de #carrito-count con la cantidad total de ítems
-  // TODO: mostrar un toast de tipo 'info' con el mensaje '"[título]" agregado al carrito'
+  // Buscar si el libro ya está en el carrito
+  const item = carrito.find(function(elemento){
+    return elemento.libro.id === libro.id;
+  });
+
+  if(item){
+    // Si ya existe, aumentar cantidad
+    item.cantidad++;
+  }else{
+    // Si no existe, agregarlo
+    carrito.push({
+      libro: libro,
+      cantidad: 1
+    });
+  }
+
+  // Calcular cantidad total
+  let total = 0;
+
+  carrito.forEach(function(item){
+    total += item.cantidad;
+  });
+
+  carritoCount.textContent = total;
+
+  // Mostrar toast
+  mostrarToast(libro.titulo + " agregado al carrito", "info");
 }
 
 
