@@ -464,8 +464,8 @@ function abrirModalCarrito() {
 
     boton.addEventListener("click", function(){
 
-      initWizard();
-
+      //initWizard();
+      confirmarCompra();
     });
 
     modalBody.appendChild(boton);
@@ -516,11 +516,21 @@ function initWizard() {
  * Vacía el carrito, cierra la modal y muestra un toast de éxito.
  */
 function confirmarCompra() {
-  // TODO: vaciar el array carrito[]
-  // TODO: actualizar #carrito-count a 0
-  // TODO: cerrar la modal
-  // TODO: mostrar toast de tipo 'exito':
-  //       '¡Compra confirmada! Gracias por tu pedido.'
+  
+  // Vaciar carrito
+  carrito = [];
+
+  // Actualizar contador
+  carritoCount.textContent = "0";
+
+  // Cerrar modal
+  cerrarModal();
+
+  // Mensaje
+  mostrarToast(
+    "¡Compra confirmada! Gracias por tu pedido.",
+    "exito"
+  );
 }
 
 
@@ -532,11 +542,25 @@ function confirmarCompra() {
  * @param {'exito'|'error'|'info'} tipo
  */
 function mostrarToast(mensaje, tipo = 'info') {
-  console.log(mensaje);
+  //console.log(mensaje);
 
-  // TODO: crear el elemento .toast con la clase correspondiente
-  // TODO: insertarlo en #toast-container
-  // TODO: eliminarlo con setTimeout después de 4000ms
+  
+  // Crear el toast
+  const toast = document.createElement("div");
+  toast.classList.add("toast");
+  toast.classList.add(tipo);
+
+  toast.textContent = mensaje;
+
+  // Agregar al contenedor
+  toastContainer.appendChild(toast);
+
+  // Eliminar luego de 4 segundos
+  setTimeout(function(){
+
+    toast.remove();
+
+  }, 4000);
 }
 
 
